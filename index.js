@@ -10,7 +10,6 @@ module.exports = function EnrageNotify(dispatch) {
     let channelNumber = 11;
     let lastEvent = 0;
     let bosses = new Set();
-    let bossesObj = {};
 
     dispatch.hook('sLogin', (event) => {
       console.log("cid: " + event.cid);
