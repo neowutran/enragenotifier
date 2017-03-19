@@ -12,9 +12,6 @@ module.exports = function EnrageNotify(dispatch) {
     let bosses = new Set();
 
     dispatch.hook('sLogin', (event) => {
-      console.log("cid: " + event.cid);
-      console.log("pid: " + event.pid);
-      console.log("name: " + event.name);
       userName = "" + event.name;
     });
 
