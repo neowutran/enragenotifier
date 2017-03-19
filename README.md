@@ -1,6 +1,6 @@
 # enragenotifier
 
-Basic module to notify the user of boss enrage timings.
+Basic module for tera-proxy (https://github.com/meishuu/tera-proxy) to notify the user of boss enrage timings.
 
 Module defaults to private state. In order to receive messages or change states you must create or join a private channel (see here: http://support.enmasse.com/tera/private-chat-channels).
 
