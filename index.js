@@ -11,31 +11,28 @@ module.exports = function EnrageNotify(dispatch) {
     let lastEvent = 0;
     let bosses = new Set();
 
-    dispatch.hook('sLogin', (event) => {
+    dispatch.hook('S_LOGIN',1, event => {
       userName = "" + event.name;
     });
 
-    dispatch.hook('sBossGageInfo', (event) => {
+    dispatch.hook('S_BOSS_GAGE_INFO', 1, event => {
         //if(!(bosses.has("" + event.id))) console.log("adding " + event.id);
         bosses.add("" + event.id);
         max_hp = event.maxHp;
         current_hp = event.curHp;
-
         percentage_hp = Math.floor((current_hp / max_hp) * 100);
-
         next_enrage = (percentage_hp > 10) ? (percentage_hp - 10) : 0;
     });
 
-    dispatch.hook('sNpcStatus', (event) => {
+    dispatch.hook('S_NPC_STATUS', 1, event => {
 
         if(!(bosses.has("" + event.creature))) return;
-
-
+        
         if(event.enraged == 0 && lastEvent == 1){
             lastEvent = 0;
             var messageString = (next_enrage > 0) ? "** boss de-enraged, next enrage at " + next_enrage + "% **" : "** boss de-enraged **";
             if(state == 0) return;
-            dispatch.toServer('cChat', {
+            dispatch.toServer('C_CHAT',1, {
                 channel: channelNumber,
                 message: messageString,
             });
@@ -46,7 +43,7 @@ module.exports = function EnrageNotify(dispatch) {
 
             if(state > 0)
             {
-              dispatch.toServer('cChat', {
+              dispatch.toServer('C_CHAT', 1, {
                   channel: channelNumber,
                   message: "** boss enraged - 36s **",
               });
@@ -56,7 +53,7 @@ module.exports = function EnrageNotify(dispatch) {
                 function(){
                     if(!(bosses.has("" + event.creature)) || state == 0)
                       return;
-                    dispatch.toServer('cChat', {
+                    dispatch.toServer('C_CHAT',1, {
                         channel: channelNumber,
                         message: "** 10s left on enrage **",
                     });
@@ -64,13 +61,13 @@ module.exports = function EnrageNotify(dispatch) {
         }
     });
 
-    dispatch.hook('sDespawnNpc', (event) => {
+    dispatch.hook('S_DESPAWN_NPC',1, (event) => {
       //if(bosses.delete("" + event.target)) console.log("deleting " + event.target);
       if(bosses.delete("" + event.target))
         lastEvent = 0;
     });
 
-    dispatch.hook('sPrivateChat', (event) => {
+    dispatch.hook('S_PRIVATE_CHAT',1, (event) => {
 
       if(userName === ("" + event.authorName))
       {
